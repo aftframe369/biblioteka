@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class="category_list">
+    {% for i in results[od:do]%}
+    <li class="record"><cite class="category">{{i.category}}</cite><a href="/book/{{i.id}}"><cite class="title">{{i.name}}</cite> - <cite class='author'>{{i.author}}</cite></a>
+    
+    </li>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+biblioteka
+TODO
+1. Guziczki do przerzucania strony w kategoriach (javascript??)
+2. Guziczki do wybrania ile pozycji na stronę
+3. Wyszukiwarka
+4. Strona książek
+5. Wypożyczanie (mail na skrzynkę)
+6. Wygląd strony
+5. Opisy kontaktowe itd

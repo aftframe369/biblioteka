@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+
+{% block main %}
+<div class="book_description">
+<img src="{{url_for('static', filename='images/book.jpg')}}" alt="okładka książki {{book.name}}" class="book_cover">
+<ul>
+    <li><cite class="book_data">Tytuł: </cite><cite class="title">{{book.name}}</cite></li>
+    <li><cite class="book_data">Autor: </cite><cite class="book_param">{{book.author}}</cite></li>
+    <li><cite class="book_data">Kategoria: </cite><cite class="book_param">{{book.category}}</cite></li>
+    <li><cite class="book_data">Rok: </cite><cite class="book_param">-</cite></li>
+    <li><cite class="book_data">Dostępnych: </cite><cite class="book_param">{{book.amount}}</cite></li>
+    <li><form action="/book/lend-{{book.id}}"><button type="submit" >Wypożycz</button></form></li>
+</ul>
+</div>
+
+{% endblock %}
