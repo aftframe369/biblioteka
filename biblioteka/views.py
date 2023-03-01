@@ -23,8 +23,8 @@ def category_page(category):
     if category in kats.kats:
         books_kats = [i for i in books if i.category==category]
         print(books_kats    )
-        if len(books_kats) < 3: rand_books = books.all()
-        else: rand_books = sample(books_kats, 6)
+        if len(books_kats) < 3: rand_books = books_kats
+        else: rand_books = sample(books_kats, 3)
         return render_template('category.html', books = books_kats, rand_books=rand_books, od=0, do=10, kategorie=kats)
     return index()
 
