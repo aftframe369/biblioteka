@@ -5,7 +5,7 @@
 <div class="category_list">
     <h2>Książki w kategorii <em>{{ books[0].category }}</em> ({{ books | length }})</h2>
     {% for i in books[od:do]%}
-    <li class="record"><a href="/book/{{i.id}}"><cite class="title">{{i.name}}</cite> - <cite
+    <li class="record"><a href="/book/{{i.id}}"><cite class="title">{{i.title}}</cite> - <cite
                 class='author'>{{i.author}}</cite></a></li>
     {% endfor %}
 </div>

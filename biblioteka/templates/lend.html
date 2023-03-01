@@ -2,7 +2,7 @@
 
 {% block main %}
 <div class="lend_div">
-<h2 class="lend_title">Wypożyczasz: <cite class="title">{{book.name}}</cite> <cite class="'author">{{book.author}}</cite></h2>
+<h2 class="lend_title">Wypożyczasz: <cite class="title">{{book.title}}</cite> <cite class="'author">{{book.author}}</cite></h2>
 <form action="/book/lendbook" method="post" class="lend_form">
     <label for="imie">Imię i nazwisko</label>
     <input type="text" name="imie">

@@ -24,7 +24,7 @@
         <ul class="kategorie">
             <h2>Kategorie</h2>
             {% for kat in kategorie %}
-            <li><a href="/kategoria/{{kat}}">{{kat.category}} ({{kat.amount}})</a></li>
+            <li><a href="/kategoria/{{kat.category}}">{{kat.category}} ({{kat.amount}})</a></li>
             {% endfor %}
         </ul>
         <div class="info">
@@ -46,7 +46,7 @@
                     <div>
                         <img src="{{ url_for('static', filename = 'images/book.jpg') }}" alt="book cover">
                         <a href='/book/{{i.id}}''>
-                        <cite class='title'>{{ i.name }}</cite>
+                        <cite class='title'>{{ i.title }}</cite>
                         <cite class="author">{{ i.author }}</cite>
                         </a>
                     </div>
@@ -58,7 +58,7 @@
                         <div>
                             <img src="{{ url_for('static', filename = 'images/book.jpg') }}" alt="book cover">
                             <p>
-                            <cite class='title'>{{ i.name }}</cite>
+                            <cite class='title'>{{ i.title }}</cite>
                             <cite class="author">{{ i.author }}</cite>
                             </p>
                         </div>

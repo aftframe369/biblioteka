@@ -13,22 +13,20 @@ def similar(comparison, term):
     return highest
 
 
-def create_index(term):
-    from .models import biblioteka
-    books = biblioteka.query.all()
+def create_index(term, books):
     ranking = []
     for i in books:
         ranking.append({
         'book': i,
-        'title':similar(i.name, term), 
+        'title':similar(i.title, term), 
         'author': similar(i.author, term), 
         'category': similar(i.category, term)
         })
     return ranking
 
 #TODO: dodać próg poniżej którego wyniki są odrzucane 
-def search(term):
-    rank = create_index(term)
+def search(term, books):
+    rank = create_index(term, books)
     rank_authors = sorted(rank, key=lambda d: d['author'], reverse=True)
     rank_titles = sorted(rank, key=lambda d: d['title'], reverse=True)
     rank_categories = sorted(rank, key=lambda d: d['category'], reverse=True)
