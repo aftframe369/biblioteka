@@ -37,7 +37,7 @@ def artysci():
 def category_page_n(category, page):
     books_kats = [i for i in books if i.category == category]
     books_kats.sort(key=lambda d: d.title)
-
+    print(books_kats)
     print(request.form)
 
     if len(books_kats) < 3:

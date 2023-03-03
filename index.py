@@ -1,5 +1,5 @@
+# type: ignore
 from biblioteka import create_app
-
 app = create_app()
 
 
