@@ -18,7 +18,7 @@ def create_index(term, books):
     for i in books:
         ranking.append({
         'book': i,
-        'title':similar(i.title, term), 
+        'title':similar(i.title, term),
         'author': similar(i.author, term), 
         'category': similar(i.category, term)
         })
@@ -30,8 +30,8 @@ def search(term, books):
     rank_authors = sorted(rank, key=lambda d: d['author'], reverse=True)
     rank_titles = sorted(rank, key=lambda d: d['title'], reverse=True)
     rank_categories = sorted(rank, key=lambda d: d['category'], reverse=True)
+
     books_ranked_in_different_ways =[]
     for ranking in rank_titles, rank_authors, rank_categories:
-        books_ranked_in_different_ways.append([j['book'] for j in ranking])
-
+        books_ranked_in_different_ways.append(ranking)
     return books_ranked_in_different_ways

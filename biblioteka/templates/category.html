@@ -1,13 +1,57 @@
 {% extends 'base.html' %}
 
+{% block three_books %}
+{% if n==0 %}
+{{ super() }}
+{% endif %}
+{% endblock %}
+
+
 {% block center_block %}
 
+
 <div class="category_list">
-    <h2>Książki w kategorii <em>{{ books[0].category }}</em> ({{ books | length }})</h2>
-    {% for i in books[od:do]%}
+    <h2>Książki w kategorii <em>{{ books[0].category }}</em> ({{ amount_in_kat }})</h2>
+    <div class="arrows">
+        {% if n>0 %}
+        <a href="/kategoria/{{books[0].category}}-0"><<</a>
+        <a href="/kategoria/{{books[0].category}}-{{n-1}}"><</a>
+        {% endif %}
+
+        {% if per_page > books|length %}
+        <p></p>
+
+        {% else %}
+        <p>strona: {{n}}</p>
+        {% endif %}
+        {% if per_page == books|length %}
+        <a href="/kategoria/{{books[0].category}}-{{n+1}}">>      </a>
+        <a href="/kategoria/{{books[0].category}}-109" class="all">Pokaż wszystkie</a>
+        {% endif %}
+
+    </div>
+    {% for i in books%}
     <li class="record"><a href="/book/{{i.id}}"><cite class="title">{{i.title}}</cite> - <cite
                 class='author'>{{i.author}}</cite></a></li>
     {% endfor %}
+    <div class="arrows">
+        {% if n>0 %}
+        <a href="/kategoria/{{books[0].category}}-0"><<</a>
+        <a href="/kategoria/{{books[0].category}}-{{n-1}}"><</a>
+        {% endif %}
+
+        {% if per_page > books|length %}
+        <p></p>
+        {% else %}
+        <p>{{n}}</p>
+        {% endif %}
+
+        {% if per_page == books|length %}
+        <a href="/kategoria/{{books[0].category}}-{{n+1}}">></a>
+        {% endif %}
+
+    </div>
+
 </div>
 
 {% endblock %}

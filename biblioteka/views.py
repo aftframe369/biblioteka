@@ -11,33 +11,75 @@ kats = kategorie(books)
 
 views = Blueprint('views', __name__)
 
+
 @views.route('/')
 def index():
 
     rand_books = sample(list(books), 3)
     return render_template('index.html', books=books, kategorie=kats, rand_books=rand_books)
 
-@views.route('/kategoria/<string:category>')
-def category_page(category):
-    print(category)
-    if category in kats.kats:
-        books_kats = [i for i in books if i.category==category]
-        print(books_kats    )
-        if len(books_kats) < 3: rand_books = books_kats
-        else: rand_books = sample(books_kats, 3)
-        return render_template('category.html', books = books_kats, rand_books=rand_books, od=0, do=10, kategorie=kats)
-    return index()
+
+@views.route('/O_nas')
+def o_nas():
+
+    rand_books = sample(list(books), 3)
+    return render_template('o_nas.html', books=books, kategorie=kats, rand_books=rand_books)
+
+
+@views.route('/artysci_hufca')
+def artysci():
+
+    rand_books = sample(list(books), 3)
+    return render_template('artysci.html', books=books, kategorie=kats, rand_books=rand_books)
+
+
+@views.route('/kategoria/<string:category>-<int:page>')
+def category_page_n(category, page):
+    books_kats = [i for i in books if i.category == category]
+    books_kats.sort(key=lambda d: d.title)
+
+    print(request.form)
+
+    if len(books_kats) < 3:
+        rand_books = books_kats
+    else:
+        rand_books = sample(books_kats, 3)
+
+    if page != 109:
+        per_page = 20
+        ten_books = books_kats[page*per_page:(page+1)*per_page]
+    else:
+        per_page = 0
+        ten_books = books_kats
+
+    return render_template('category.html',
+                           books=ten_books,
+                           rand_books=rand_books,
+                           kategorie=kats,
+                           n=page,
+                           amount_in_kat=kats.where_category(category).amount,
+                           per_page=per_page)
 
 
 @views.route('/book/<id>')
 def book_page(id):
-    return render_template('book.html', book = books.where_id(id), kategorie=kats)
+    return render_template('book.html', book=books.where_id(id), kategorie=kats)
+
 
 @views.route('/search', methods=["POST"])
 def search_page():
-    print(request.form['search'])
-    ranked_by_title, ranked_by_authors, ranked_by_category = search(request.form['search'], books)
-    return render_template('search.html', results=ranked_by_title, kategorie = kats, od=0, do=30)
+    query = request.form['search']
+    ranked_by_title, ranked_by_authors, ranked_by_category = search(
+        query, books)
+    ranked_by_title_good = filter(lambda d: d['title'] > 0.5, ranked_by_title)
+    ranked_by_title_bad = filter(
+        lambda d: 0.35 < d['title'] <= 0.5, ranked_by_title)
+    return render_template('search.html',
+                           results_good=[i['book'] for i in ranked_by_title_good],
+                           results_bad=[i['book'] for i in ranked_by_title_bad],
+                           kategorie=kats,
+                           query=query)
+
 
 @views.route('/book/lend-<id>')
 def lend_book(id):

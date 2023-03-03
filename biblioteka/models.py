@@ -66,6 +66,11 @@ class kategorie:
             for cat in self.kategorie:
                 if book.category == cat.category: cat.amount+=1
 
+    def where_category(self, string):
+        for i in self.kategorie:
+            if i.category == string: return i
+        return self.kategorie[0]
+
     def __iter__(self):
         for i in self.kategorie:
             yield i
