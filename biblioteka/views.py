@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, request
 from .models import kategorie, biblioteka
 from random import sample
 from . import search
-from time import gmtime, time, strftime
+from time import time
+from urllib.parse import unquote
 
 # database loading
 books = biblioteka()
@@ -24,35 +25,41 @@ def update_database():
 @views.route('/')
 def index():
     update_database()
+    
     rand_books = sample(list(books), 3)
     return render_template('index.html', books=books, kategorie=kats, rand_books=rand_books)
 
 
 @views.route('/O_nas')
 def o_nas():
-    rand_books = sample(list(books), 3)
-    return render_template('o_nas.html', books=books, kategorie=kats, rand_books=rand_books)
+    return render_template('o_nas.html', books=books, kategorie=kats)
 
 
 @views.route('/artysci_hufca')
 def artysci():
-    rand_books = sample(list(books), 3)
-    return render_template('artysci.html', books=books, kategorie=kats, rand_books=rand_books)
+    return render_template('artysci.html', books=books, kategorie=kats)
 
 
 @views.route('/kategoria/<string:category>-<int:page>')
 def category_page_n(category, page):
-    print(category)
-    books_kats = [i for i in books if i.category == category]
-    books_kats.sort(key=lambda d: d.title)
-    print(books_kats)
-    print(request.form)
+    print(unquote(category))
 
+    """select all books that  have category == category from request, 
+       unquote() changes %xx to utf-8 characters for comparison of categories
+       with polish characters and spaces"""    
+    books_kats = [i for i in books if i.category == unquote(category)]
+    books_kats.sort(key=lambda d: d.title)
+
+    """ if less than 3 books in category show them all in carouzel
+        else sample 3 random books """
     if len(books_kats) < 3:
         rand_books = books_kats
     else:
         rand_books = sample(books_kats, 3)
 
+    """ code 109 is a totally random, big number, 
+    if user clicks 'show all' will be redirected to /'cat-109' 
+    and all books in category will be listed """
     if page != 109:
         per_page = 20
         ten_books = books_kats[page*per_page:(page+1)*per_page]
@@ -71,18 +78,21 @@ def category_page_n(category, page):
 
 @views.route('/book/<id>')
 def book_page(id):
+    """ render information page for a single book """
     return render_template('book.html', book=books.where_id(id), kategorie=kats)
 
 
 @views.route('/search', methods=["POST"])
 def search_page():
     update_database()
+
     query = request.form['search']
-    ranked_by_title, ranked_by_authors, ranked_by_category = search(
-        query, books)
+    ranked_by_title, ranked_by_authors, ranked_by_category = search(query, books)
+
+    """ split search results to those above and those below 0.5 relevance """
     ranked_by_title_good = filter(lambda d: d['title'] > 0.5, ranked_by_title)
-    ranked_by_title_bad = filter(
-        lambda d: 0.35 < d['title'] <= 0.5, ranked_by_title)
+    ranked_by_title_bad = filter(lambda d: 0.35 < d['title'] <= 0.5, ranked_by_title)
+
     return render_template('search.html',
                            results_good=[i['book'] for i in ranked_by_title_good],
                            results_bad=[i['book'] for i in ranked_by_title_bad],
@@ -92,4 +102,5 @@ def search_page():
 
 @views.route('/book/lend-<id>')
 def lend_book(id):
+    #TODO
     return render_template('lend.html', kategorie=kats, book=books.where_id(id))
