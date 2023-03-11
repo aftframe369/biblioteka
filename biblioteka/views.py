@@ -103,15 +103,19 @@ def search_page():
 
 @views.route('/book/lend-<int:id>', methods=['GET','POST'])
 def lend_book(id):
+    form_success = False
     if request.method == 'POST':
         book = books.where_id(int(id))
         person = {
             'name': request.form['name'],
             'tribe': request.form['tribe'],
             'numer_ewidencji': request.form['numer_ewidencji'],
-            
+            'text': request.form['text_area'],
+            'phone': request.form['phone']
 
         }
         send_book_request.send(book, person)
+        form_success = True
 
-    return render_template('lend.html', kategorie=kats, book=books.where_id(id))
+
+    return render_template('lend.html', kategorie=kats, book=books.where_id(id), form_success=form_success)

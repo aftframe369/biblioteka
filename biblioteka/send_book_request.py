@@ -10,17 +10,17 @@ passw = environ['MAIL_KEY']
 
 def send(book, person_info):
 
-    # Create the base text message.
     msg = EmailMessage()
     msg['Subject'] = f"zamówienie książki {book}"
     msg['From'] = Address(f"{person_info['name']}", "mariuszkisling", 'gmail.com')
     msg['To'] = (
-        Address("maciej glinski", "maciej.glinski+zamowienia", "zhp.net.pl"), 
-                Address('asia pająk','joanna.pajak+zamowienia', 'zhp.net.pl')
+        Address("maciej glinski", "maciej.glinski+zamowienia", "zhp.net.pl")
+        #, Address('asia pająk','joanna.pajak+zamowienia', 'zhp.net.pl')
                 )
     msg.set_content(f"""jestem {person_info['name']}
     środowisko: {person_info['tribe']}
     mój numer ewidencji: {person_info['numer_ewidencji']}.
+    tel/email: {person_info['phone']}
     
     Chcę zamówić książkę 
     id: {book.id}    
@@ -28,6 +28,7 @@ def send(book, person_info):
     autor: {book.author}    
     z kategorii: {book.category}    
     
+    {person_info['text']}
     
     mail wygenerowany automatycznie ze strony biblioteka.vercell.app""")
 

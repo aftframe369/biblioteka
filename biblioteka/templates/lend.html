@@ -3,6 +3,9 @@
 {% block main %}
 <div class="lend_div">
 <h2 class="lend_title">Wypożyczasz: <cite class="title">{{book.title}}</cite> <cite class="'author">{{book.author}}</cite></h2>
+{% if form_success == True %}
+<p>Zamówienie zostało złożone! Jeśli jest poprawne książkę będzie czekać w sekretariacie od najbliższego poniedziałku.</p>
+{% endif %}
 <form action="/book/lend-{{book.id}}" method="post" class="lend_form">
     <label for="name">Imię i nazwisko</label>
     <input type="text" name="name">
@@ -10,6 +13,10 @@
     <input type="text" name="numer_ewidencji">
     <label for="tribe">Drużyna/szczep</label>
     <input type="text" name="tribe">
+    <label for="phone">numer telefonu i/lub email</label>
+    <input type="text" name="phone">
+    <label for="text_area">Inne informacje, lub coś miłego</label>
+    <textarea name="text_area" cols="40" rows="3"></textarea>
     <button type="submit">Prześlij</button>
 </form>
 </div>
