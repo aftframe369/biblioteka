@@ -14,8 +14,7 @@ def send(book, person_info):
     msg['Subject'] = f"zamówienie książki {book}"
     msg['From'] = Address(f"{person_info['name']}", "mariuszkisling", 'gmail.com')
     msg['To'] = (
-        Address("maciej glinski", "maciej.glinski+zamowienia", "zhp.net.pl")
-        #, Address('asia pająk','joanna.pajak+zamowienia', 'zhp.net.pl')
+        Address("maciej glinski", "maciej.glinski+zamowienia", "zhp.net.pl"), Address('asia pająk','joanna.pajak+zamowienia', 'zhp.net.pl')
                 )
     msg.set_content(f"""jestem {person_info['name']}
     środowisko: {person_info['tribe']}
