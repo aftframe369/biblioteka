@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request
 from .models import kategorie, biblioteka
 from random import sample
-from . import search
+from .search import search
+from . import send_book_request
 from time import time
 from urllib.parse import unquote
 
@@ -25,7 +26,7 @@ def update_database():
 @views.route('/')
 def index():
     update_database()
-    
+
     rand_books = sample(list(books), 3)
     return render_template('index.html', books=books, kategorie=kats, rand_books=rand_books)
 
@@ -100,7 +101,17 @@ def search_page():
                            query=query)
 
 
-@views.route('/book/lend-<id>')
+@views.route('/book/lend-<int:id>', methods=['GET','POST'])
 def lend_book(id):
-    #TODO
+    if request.method == 'POST':
+        book = books.where_id(int(id))
+        person = {
+            'name': request.form['name'],
+            'tribe': request.form['tribe'],
+            'numer_ewidencji': request.form['numer_ewidencji'],
+            
+
+        }
+        send_book_request.send(book, person)
+
     return render_template('lend.html', kategorie=kats, book=books.where_id(id))

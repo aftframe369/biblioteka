@@ -3,13 +3,13 @@
 {% block main %}
 <div class="lend_div">
 <h2 class="lend_title">Wypożyczasz: <cite class="title">{{book.title}}</cite> <cite class="'author">{{book.author}}</cite></h2>
-<form action="/book/lendbook" method="post" class="lend_form">
-    <label for="imie">Imię i nazwisko</label>
-    <input type="text" name="imie">
-    <label for="ewidencja">Numer ewidencji</label>
-    <input type="text" name="ewidencja">
-    <label for="środowisko">Drużyna/szczep</label>
-    <input type="text" name="środowisko">
+<form action="/book/lend-{{book.id}}" method="post" class="lend_form">
+    <label for="name">Imię i nazwisko</label>
+    <input type="text" name="name">
+    <label for="numer_ewidencji">Numer ewidencji</label>
+    <input type="text" name="numer_ewidencji">
+    <label for="tribe">Drużyna/szczep</label>
+    <input type="text" name="tribe">
     <button type="submit">Prześlij</button>
 </form>
 </div>
