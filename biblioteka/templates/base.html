@@ -40,12 +40,14 @@
             </div>
         </div>
         <div>
-            <div class="searchbar">
                 <form action="/search" method="POST" class="searchbar">
                     <input type="text" placeholder="Czego szukasz?" name="search">
+                    <select name="select_search">
+                        <option value="Tytuł">Tytuł</option>
+                        <option value="Autor">Autor</option>
+                    </select>
                     <button type="submit">Szukaj</button>
                 </form>
-            </div>
             {% block main %}
             {% block three_books %}
 

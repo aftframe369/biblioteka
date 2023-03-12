@@ -30,6 +30,7 @@ class biblioteka:
         return self.books
 
     def load(self):
+        self.books = []
         for i in read_csv():
             self.books.append(book(int(i[0]), i[1], i[2], int(i[3]), i[4]))
 

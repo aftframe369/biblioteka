@@ -1,19 +1,22 @@
 {% extends 'base.html' %}
 
 {% block main %}
-<p>Nie ma książki której szukasz? Zamów ją w zakładce <b>Zamów książkę</b></p>
+<p class="niema_ksiazki">Nie ma książki której szukasz? Zamów ją w zakładce <b>Zamów książkę</b></p>
 
-<div class="category_list">
+<div class="book_list">
     <h2>Rezultaty dla: {{query}} ({{results_good|length}})</h2>
     {% for i in results_good%}
-    <li class="record"><cite class="category">{{i.category}}</cite><a href="/book/{{i.id}}"><cite class="title">{{i.title}}</cite> - <cite class='author'>{{i.author}}</cite></a>
-    
+    <li class="result"><cite class="category">{{i.category}}</cite><a href="/book/{{i.id}}"><cite
+                class="title">{{i.title}}</cite><cite class='author'>- {{i.author}}</cite></a>
+
     </li>
     {% endfor %}
-    <p>Pozostałe wyniki raczej nie odpowiedzą na twoje pytanie</p>
+    <br>
+    <h2> Pozostałe wyniki raczej nie odpowiedzą na twoje pytanie</h2>
     {% for i in results_bad%}
-    <li class="record"><cite class="category">{{i.category}}</cite><a href="/book/{{i.id}}"><cite class="title">{{i.title}}</cite> - <cite class='author'>{{i.author}}</cite></a>
-    
+    <li class="result"><cite class="category">{{i.category}}</cite><a href="/book/{{i.id}}"><cite
+                class="title">{{i.title}}</cite><cite class='author'>- {{i.author}}</cite></a>
+
     </li>
     {% endfor %}
 </div>

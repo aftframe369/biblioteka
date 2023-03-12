@@ -10,7 +10,7 @@
 {% block center_block %}
 
 
-<div class="category_list">
+<div class="book_list">
     <h2>Książki w kategorii <em>{{ books[0].category }}</em> ({{ amount_in_kat }})</h2>
     <div class="arrows">
         {% if n>0 %}
@@ -31,8 +31,8 @@
 
     </div>
     {% for i in books%}
-    <li class="record"><a href="/book/{{i.id}}"><cite class="title">{{i.title}}</cite> - <cite
-                class='author'>{{i.author}}</cite></a></li>
+    <li class="record"><a href="/book/{{i.id}}"><cite class="title">{{i.title}}</cite><cite
+                class='author'>- {{i.author}}</cite></a></li>
     {% endfor %}
     <div class="arrows">
         {% if n>0 %}
