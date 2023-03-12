@@ -2,3 +2,5 @@
 2. zaproponuj książkę
 3. artyści hufca wyglądają źle
 4. email?
+5. filtry wyszukiwania
+6. info jest w fatalnym miejscu
