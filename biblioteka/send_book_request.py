@@ -8,29 +8,51 @@ passw = 'mcneetkykilaaxis'
 passw = environ['MAIL_KEY']
 
 
-def send(book, person_info):
+def send(book, person_info, type):
 
     msg = EmailMessage()
-    msg['Subject'] = f"zamówienie książki {book}"
+    msg['Subject'] = f"{type} - {book}"
     msg['From'] = Address(f"{person_info['name']}", "mariuszkisling", 'gmail.com')
     msg['To'] = (
         Address("maciej glinski", "maciej.glinski+zamowienia", "zhp.net.pl"), 
         Address('asia pająk','joanna.pajak+zamowienia', 'zhp.net.pl')
         )
-    msg.set_content(f"""jestem {person_info['name']}
-    środowisko: {person_info['tribe']}
-    mój numer ewidencji: {person_info['numer_ewidencji']}.
-    tel/email: {person_info['phone']}
+
+    if type=='zamówienie':
+        msg.set_content(
+                        f"""jestem {person_info['name']}
+środowisko: {person_info['tribe']}
+mój numer ewidencji: {person_info['numer_ewidencji']}.
+tel/email: {person_info['phone']}
+
+Chcę zamówić książkę 
+id: {book.id}    
+tytuł: {book.title}    
+autor: {book.author}    
+z kategorii: {book.category}    
+
+{person_info['text']}
+
+mail wygenerowany automatycznie ze strony biblioteka.vercell.app"""
+        )
     
-    Chcę zamówić książkę 
-    id: {book.id}    
-    tytuł: {book.title}    
-    autor: {book.author}    
-    z kategorii: {book.category}    
-    
-    {person_info['text']}
-    
-    mail wygenerowany automatycznie ze strony biblioteka.vercell.app""")
+    elif type == 'propozycja':
+        msg.set_content(
+                        f"""jestem {person_info['name']}
+środowisko: {person_info['tribe']}
+mój numer ewidencji: {person_info['numer_ewidencji']}.
+tel/email: {person_info['phone']}
+
+Chcę zamówić książkę 
+tytuł: {book['title']}    
+autor: {book['author']} 
+uzasadnienie: {book['why']}
+dostępną w?: {book['available']}   
+
+{person_info['text']}
+
+mail wygenerowany automatycznie ze strony biblioteka.vercell.app"""
+        )
 
     # Send the message via local SMTP s.
     with smtplib.SMTP('smtp.gmail.com', 587) as s:
@@ -47,4 +69,4 @@ def send(book, person_info):
 
 if __name__ == '__main__':
     #will not wor, must insert real book object and person info object
-    send('emilia kulczyk prus','maciuś i asiunia')
+    send('emilia kulczyk prus','maciuś i asiunia', 'zamówienie')

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="lend_div">
+<h2 class="lend_title">Jakiej książki brakje ci w naszym zbiorze</h2>
+{% if form_success == True %}
+<p>Propozycja zostało złożona! Damy znać kiedy będzie dostępna</p>
+{% endif %}
+<form action="/zaproponuj" method="post" class="lend_form">
+<h2>Opis książki</h2>
+<label for="title">Tytuł książki</label>
+<input type="text" name="title">    
+<label for="author">Autor i/lub wydawnictwo</label>
+<input type="text" name="author">    
+<label for="available">Skąd możemy ją zdobyć (opcjonalnie)</label>
+<input type="text" name="available">    
+<label for="why">Czemu powinniśmy kupić tę książkę</label>
+<textarea name="why" cols="40" rows="3"></textarea>
+<br>
+<h2>Twoje dane</h2>
+    <label for="name">Imię i nazwisko</label>
+    <input type="text" name="name">
+    <label for="numer_ewidencji">Numer ewidencji</label>
+    <input type="text" name="numer_ewidencji">
+    <label for="tribe">Drużyna/szczep</label>
+    <input type="text" name="tribe">
+    <label for="phone">numer telefonu i/lub email</label>
+    <input type="text" name="phone">
+    <br>
+    <label for="text_area">Inne informacje, lub coś miłego</label>
+    <textarea name="text_area" cols="40" rows="3"></textarea>
+    <button type="submit">Prześlij</button>
+</form>
+</div>
+{% endblock %}

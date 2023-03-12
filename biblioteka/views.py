@@ -27,8 +27,8 @@ def update_database():
 def index():
     update_database()
 
-    rand_books = sample(list(books), 3)
-    return render_template('index.html', books=books, kategorie=kats, rand_books=rand_books)
+    books_carouzel = sample(list(books), 3)
+    return render_template('index.html', books=books, kategorie=kats, rand_books=books_carouzel)
 
 
 @views.route('/O_nas')
@@ -54,9 +54,9 @@ def category_page_n(category, page):
     """ if less than 3 books in category show them all in carouzel
         else sample 3 random books """
     if len(books_kats) < 3:
-        rand_books = books_kats
+        books_carouzel = books_kats
     else:
-        rand_books = sample(books_kats, 3)
+        books_carouzel = sample(books_kats, 3)
 
     """ code 109 is a totally random, big number, 
     if user clicks 'show all' will be redirected to /'cat-109' 
@@ -70,7 +70,7 @@ def category_page_n(category, page):
 
     return render_template('category.html',
                            books=ten_books,
-                           rand_books=rand_books,
+                           rand_books=books_carouzel,
                            kategorie=kats,
                            n=page,
                            amount_in_kat=kats.where_category(category).amount,
@@ -88,15 +88,24 @@ def search_page():
     update_database()
 
     query = request.form['search']
-    ranked_by_title, ranked_by_authors, ranked_by_category = search(query, books)
+    search_in = request.form['select_search']
 
+    ranked_by_title, ranked_by_authors, ranked_by_category = search(query, books)
+    
     """ split search results to those above and those below 0.5 relevance """
-    ranked_by_title_good = filter(lambda d: d['title'] > 0.5, ranked_by_title)
-    ranked_by_title_bad = filter(lambda d: 0.35 < d['title'] <= 0.5, ranked_by_title)
+    print(search_in)
+    if search_in == "title":
+        results = ranked_by_title
+    elif search_in == 'author':
+        results = ranked_by_authors
+    else: raise(KeyError)
+
+    results_good = filter(lambda d: d[search_in] > 0.5, results)
+    results_mediocore = filter(lambda d: 0.35 < d[search_in] <= 0.5, results)
 
     return render_template('search.html',
-                           results_good=[i['book'] for i in ranked_by_title_good],
-                           results_bad=[i['book'] for i in ranked_by_title_bad],
+                           results_good=[i['book'] for i in results_good],
+                           results_bad=[i['book'] for i in results_mediocore],
                            kategorie=kats,
                            query=query)
 
@@ -114,8 +123,31 @@ def lend_book(id):
             'phone': request.form['phone']
 
         }
-        send_book_request.send(book, person)
+        send_book_request.send(book, person, 'zmaówienie')
         form_success = True
 
 
     return render_template('lend.html', kategorie=kats, book=books.where_id(id), form_success=form_success)
+
+@views.route('/zaproponuj', methods=['GET','POST'])
+def proposition():
+    form_success = False
+
+    if request.method == 'POST':
+        book = {
+            'title': request.form['title'],
+            'author': request.form['author'],
+            'available': request.form['available'],
+            'why': request.form['why'],
+
+        }
+        person = {
+            'name': request.form['name'],
+            'tribe': request.form['tribe'],
+            'numer_ewidencji': request.form['numer_ewidencji'],
+            'phone': request.form['phone'],
+            'text': request.form['text_area']
+        }
+        send_book_request.send(book, person, 'propozycja')
+        form_success = True
+    return render_template('proposition.html', kategorie=kats, form_success=form_success)

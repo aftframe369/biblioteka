@@ -1,14 +1,23 @@
 import csv
-import urllib.request
+import urllib.request, urllib.error
 import os
 
 def read_csv():
-    with urllib.request.urlopen('https://raw.githubusercontent.com/aftframe369/biblioteka_data/main/data.csv') as file:
-        file = [l.decode('utf-8') for l in file.readlines()]
-        reader = csv.reader(file)
-        next(reader)
-        for i in reader:
-            yield i
+    try:
+        with urllib.request.urlopen('https://raw.githubusercontent.com/aftframe369/biblioteka_data/main/data.csv') as file:
+            file = [l.decode('utf-8') for l in file.readlines()]
+            reader = csv.reader(file)
+            next(reader)
+            for i in reader:
+                yield i
+
+    except urllib.error.URLError:
+        #if no connection load from file. Useful for debugging offline
+        with open('/home/maciej/Programowanie/Web/biblioteka/biblioteka/static/data.csv', 'r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            next(reader)
+            for i in reader:
+                yield i
 
 class book:
     def __init__(self, id: int, title: str, author: str, amount: int, category: str):
@@ -44,6 +53,7 @@ class biblioteka:
 
 
 class kategoria:
+    # single kategory record with id, category name, amount of books in category
     def __init__(self, id, cat, amount):
         self.cat_id = id
         self.category = cat
@@ -56,13 +66,9 @@ class kategoria:
 class kategorie:
     def __init__(self, biblioteka):
         self.kategorie = []
-        self.kats = []
-        for i in biblioteka:
-            self.kats.append(i.category)
-        self.kats = list(set(self.kats))
-        self.kats.sort()
-        for i, cat in enumerate(self.kats):
-            self.kategorie.append(kategoria(i, cat, 0))
+        self.load_cats(biblioteka)
+
+        #calculate how much books in category, there probably is a better way to do it
         for book in biblioteka:
             for cat in self.kategorie:
                 if book.category == cat.category: cat.amount+=1
@@ -71,6 +77,16 @@ class kategorie:
         for i in self.kategorie:
             if i.category == string: return i
         return self.kategorie[0]
+
+    def load_cats(self, biblioteka):
+        kats = [] #temporary list
+        for book in biblioteka:
+            if book.category not in kats:
+                kats.append(book.category)
+            
+        kats.sort()
+        for i, cat in enumerate(kats):
+            self.kategorie.append(kategoria(i, cat, 0))
 
     def __iter__(self):
         for i in self.kategorie:
@@ -85,7 +101,5 @@ if __name__ == '__main__':
 
     for i in categories:
         (print(i))
-
-                
 
 
