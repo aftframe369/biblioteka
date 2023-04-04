@@ -151,3 +151,8 @@ def proposition():
         send_book_request.send(book, person, 'propozycja')
         form_success = True
     return render_template('proposition.html', kategorie=kats, form_success=form_success)
+
+
+@views.route('/polityka_prywatnosci')
+def polityka_prywatnosci():
+    return render_template('polityka_prywatnosci.html', kategorie=kats)

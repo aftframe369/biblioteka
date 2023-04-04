@@ -2,7 +2,7 @@
 
 {% block main %}
 <div class="lend_div">
-<h2 class="lend_title">Jakiej książki brakje ci w naszym zbiorze</h2>
+<h2 class="lend_title">Jakiej książki brakuje ci w naszym zbiorze</h2>
 {% if form_success == True %}
 <p>Propozycja zostało złożona! Damy znać kiedy będzie dostępna</p>
 {% endif %}
@@ -12,7 +12,7 @@
 <input type="text" name="title">    
 <label for="author">Autor i/lub wydawnictwo</label>
 <input type="text" name="author">    
-<label for="available">Skąd możemy ją zdobyć (opcjonalnie)</label>
+<label for="available">Skąd możemy ją zdobyć</label>
 <input type="text" name="available">    
 <label for="why">Czemu powinniśmy kupić tę książkę</label>
 <textarea name="why" cols="40" rows="3"></textarea>
