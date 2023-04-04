@@ -21,7 +21,7 @@ html {
 }
 
 a {
-    padding: 0.25em;
+    padding: 0.5em;
     color: black;
     text-decoration: none;
 }
@@ -40,10 +40,18 @@ a:hover {
     align-items: center;
     justify-content: center;
 }
+.navbar img {
+    width: 2.5cm;
+    height: auto;
+    padding: 1ch;
+    padding-right: 1em;
+    display: inline;
+}
 
 .navbar li {
     display: inline;
     overflow: hidden;
+    
 }
 
 .navbar a {
@@ -58,14 +66,6 @@ a:hover {
     border-radius: 0;
     background-color: var(--light_grey);
     color:black ;
-}
-
-.navbar img {
-    width: 2.5cm;
-    height: auto;
-    padding: 1ch;
-    padding-right: 1em;
-    display: inline;
 }
 
 container {
